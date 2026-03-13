@@ -31,4 +31,4 @@ jobs:
           subject: "Prissjekk"
           to: oskar.hellum.reppen@gmail.com
           from: oskar.hellum.reppen@gmail.com
-          body: file://target/resultat.tx
+          body: file://src/main/resources/resultat.txt
