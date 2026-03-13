@@ -2,16 +2,18 @@ package oskar.projects.bot.price_checker.model;
 
 import java.util.Objects;
 
+import static java.lang.String.valueOf;
+
 public class Result {
   String store;
   String name;
-  String price;
+  Double price;
   boolean hasSize;
 
-  Result(String store, String name, String price, boolean hasSize) {
+  public Result(String store, String name, Double price, boolean hasSize) {
     this.store = Objects.requireNonNull(store);
     this.name = Objects.requireNonNull(name);
-    this.price = Objects.requireNonNull(price);
+    this.price = price;
     this.hasSize = Objects.requireNonNull(hasSize);
   }
 
@@ -23,7 +25,7 @@ public class Result {
     return name;
   }
 
-  public String getPrice() {
+  public Double getPrice() {
     return price;
   }
 
