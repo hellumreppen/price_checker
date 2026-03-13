@@ -2,7 +2,7 @@ name: priceCheckTimed
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # kjør hver 2. time
+    - cron: '0 8 * * *'  
   workflow_dispatch:         # kan også kjøres manuelt
 
 jobs:
@@ -18,6 +18,18 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
-      - name: Bygg og kjør
+      - name: compile
         run: |
-          mvn compile exec:java -Dexec.mainClass="Main" -e
+          mvn compile
+
+      - name: package
+        run: |
+          mvn package
+
+      - name: install
+        run: |
+          mvn clean install
+
+      - name: kjør
+        run: |
+          mvn exec:java -Dexec.mainClass="oskar.projects.bot.price_checker.Main"
