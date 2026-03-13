@@ -20,4 +20,4 @@ jobs:
 
       - name: Bygg og kjør
         run: |
-          mvn compile exec:java -Dexec.mainClass="Main"
+          mvn compile exec:java -Dexec.mainClass="Main" -e
