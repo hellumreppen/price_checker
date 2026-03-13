@@ -20,16 +20,15 @@ jobs:
           
       - name: Bygg og kjør
         run: mvn clean install exec:java -Dexec.mainClass="oskar.projects.bot.price_checker.Main"
-
+        
       - name: Send e-post
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.gmail.com
+          server_address: smtp-relay.brevo.com
           server_port: 465
-          username: ${{ secrets.GMAIL_USER }}
-          password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: "Prissjekk ${{ github.run_number }}"
-          to: din@epost.no
-          from: din@epost.no
-          body: file://resultat.txt
-
+          username: ${{ secrets.BREVO_USER }}
+          password: ${{ secrets.BREVO_PASSWORD }}
+          subject: "Prissjekk"
+          to: oskar.hellum.reppen@gmail.com
+          from: oskar.hellum.reppen@gmail.com
+          body: file://resultat.tx
