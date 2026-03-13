@@ -12,13 +12,14 @@ public class SkiBootApiScraper {
 
   private String searchWord;
   private String preferredSize;
+  private String price;
 
   public SkiBootApiScraper(String searchWord, String preferredSize) {
     this.searchWord = searchWord;
     this.preferredSize = preferredSize;
   }
 
-  public void getPrices() throws Exception{
+  public void checkBraasport() throws Exception{
     String requestBody = """
         {
             "query": "%s",
@@ -52,16 +53,19 @@ public class SkiBootApiScraper {
     JsonNode products = root.get("results").get("items");
 
     JsonNode product = products.get(0);
-      String name = findPrice(product, "Name");
-      String price = findPrice(product, "RetailPrice");
-      String membershipPrice = findPrice(product, "MembershipPrice");
-      boolean hasSize = hasSize(product, "Attributes.sizeInStock", preferredSize);
+    String name = findPrice(product, "Name");
+    String ordinaryPrice = findPrice(product, "RetailPrice");
+    String membershipPrice = findPrice(product, "MembershipPrice");
+    boolean hasSize = hasSize(product, "Attributes.sizeInStock", preferredSize);
 
-      System.out.println("Produkt:      " + name);
-      System.out.println("Ordinær price: " + price + " kr");
-      System.out.println("Medlemspris:  " + membershipPrice + " kr");
-      System.out.println("Størrelse " + preferredSize + " på lager: " + (hasSize ? "JA" : "Nei"));
-      System.out.println("---");
+    if (membershipPrice != null) {
+      price = membershipPrice;
+    } else {
+      price = ordinaryPrice;
+    }
+
+    Result result = new Result("Braasport.no", name, price, hasSize);
+    System.out.println(result);
   }
 
   static String findPrice(JsonNode product, String attributeName) {
@@ -84,5 +88,44 @@ public class SkiBootApiScraper {
       }
     }
     return false;
+  }
+
+  public Result checkSkistar(String product, String size) throws Exception{
+    String url = "https://wc1a73d47.api.esales.apptus.cloud/api/storefront/v3/queries/search-page"
+            + "?market=NO"
+            + "&customerKey=e82450a9-1895-46e1-9076-be961a7dd8f6"
+            + "&sessionKey=27302c58-04e0-4127-8b73-3deb7cc9d480"
+            + "&locale=nb-NO"
+            + "&touchpoint=desktop"
+            + "&limit=24&skip=0"
+            + "&q=" + product.replace(" ", "+")
+            + "&presentPrices=member_bas";
+
+    HttpClient client = HttpClient.newHttpClient();
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .header("Accept", "application/json")
+            .GET()
+            .build();
+
+    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode root = mapper.readTree(response.body());
+
+    JsonNode product0 = root.get("primaryList")
+            .get("productGroups").get(0)
+            .get("products").get(0);
+
+    String navn = product0.get("title").asText();
+    String price = String.valueOf(product0.get("sellingPrice").get("min"));
+
+    // Sjekk størrelse i variants
+    boolean harStorrelse = false;
+    for (JsonNode variant : product0.get("variants")) {
+      // Vi ser på dette når du limer inn variant-strukturen
+    }
+
+    return new Result("Skistar Shop", navn, price, harStorrelse);
   }
 }

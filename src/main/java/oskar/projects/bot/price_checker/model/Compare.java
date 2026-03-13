@@ -1,4 +1,4 @@
 package oskar.projects.bot.price_checker.model;
 
-public class Timer {
+public class Compare {
 }
