@@ -5,6 +5,7 @@ import oskar.projects.bot.price_checker.model.scrapers.Skistar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Compare {
 
@@ -17,6 +18,7 @@ public class Compare {
 
   public Result getLowestPrice() throws Exception {
     return results.stream()
+            .filter(Objects::nonNull)
             .filter(Result::hasSize)
             .min((r1,r2) -> Double.compare(r1.getPrice(), r2.getPrice()))
             .orElse(null);

@@ -47,6 +47,10 @@ public class Braasport implements MainScraper {
     JsonNode products = root.get("results").get("items");
 
     JsonNode product = products.get(0);
+
+    if (product == null) {
+      return null;
+    }
     String name = findPrice(product, "Name");
     String ordinaryPrice = findPrice(product, "RetailPrice");
     String membershipPrice = findPrice(product, "MembershipPrice");

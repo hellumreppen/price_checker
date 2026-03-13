@@ -8,8 +8,13 @@ import oskar.projects.bot.price_checker.model.scrapers.Skistar;
 public class Main {
   static void main() throws Exception{
     try {
-      //Compare compare = new Compare();
-      String output = new Skistar().checkPrice("atomic hawx ultra xtd 130 ", "27,5").toString();
+      String output = "";
+      Compare compare = new Compare();
+      if (compare.getLowestPrice() != null) {
+        output = compare.getLowestPrice().toString();
+      } else {
+        output = "Ingen varer i din størrelse:(";
+      }
 
       java.nio.file.Files.writeString(java.nio.file.Path.of("src/main/resources/resultat.txt"), output);
 
