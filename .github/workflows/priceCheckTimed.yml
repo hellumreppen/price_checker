@@ -23,7 +23,7 @@ jobs:
         
       - name: Send Discord-melding
         run: |
-          MESSAGE=$(cat target/resultat.txt)
+          MESSAGE=$(cat src/main/resources/resultat.txt)
           curl -H "Content-Type: application/json" \
                -d "{\"content\": \"$MESSAGE\"}" \
                ${{ secrets.DISCORD_WEBHOOK }}
