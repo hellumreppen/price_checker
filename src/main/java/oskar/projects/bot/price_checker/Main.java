@@ -9,7 +9,7 @@ public class Main {
   static void main() throws Exception{
     try {
       //Compare compare = new Compare();
-      String output = new Skistar().checkPrice("atomic hawx ultra xtd 130", "27,5").toString();
+      String output = new Skistar().checkPrice("atomic hawx ultra xtd 130 ", "27,5").toString();
 
       java.nio.file.Files.writeString(java.nio.file.Path.of("target/resultat.txt"), output);
 
