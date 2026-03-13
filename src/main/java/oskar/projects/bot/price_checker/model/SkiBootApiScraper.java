@@ -8,13 +8,17 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class ApiScraper {
+public class SkiBootApiScraper {
+
+  private String searchWord;
+  private String preferredSize;
+
+  public SkiBootApiScraper(String searchWord, String preferredSize) {
+    this.searchWord = searchWord;
+    this.preferredSize = preferredSize;
+  }
 
   public void getPrices() throws Exception{
-
-    String searchWord = "atomic hawx ultra 130 xtd boa";
-    String preferredSize = "27,5";  // endre denne etter behov
-
     String requestBody = """
         {
             "query": "%s",
