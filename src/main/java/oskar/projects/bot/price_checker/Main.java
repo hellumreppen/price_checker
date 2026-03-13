@@ -6,9 +6,13 @@ import oskar.projects.bot.price_checker.model.scrapers.Skistar;
 
 public class Main {
   static void main() throws Exception{
-    Compare compare = new Compare();
-    System.out.println("Billigste pris som har størrelse 27,5 er : \n -------------------\n");
-    System.out.println(compare.getLowestPrice());
+    try {
+      Compare compare = new Compare();
+      System.out.println("Billigste pris som har størrelse 27,5 er : \n -------------------\n");
+      System.out.println(compare.getLowestPrice());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }
