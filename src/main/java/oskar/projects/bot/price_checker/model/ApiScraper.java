@@ -12,8 +12,8 @@ public class ApiScraper {
 
   public void getPrices() throws Exception{
 
-    String sokeord = "tecnica zero g tour pro";
-    String onsketStorrelse = "27,5";  // endre denne etter behov
+    String searchWord = "tecnica zero g tour pro";
+    String preferredSize = "27,5";  // endre denne etter behov
 
     String requestBody = """
         {
@@ -25,7 +25,7 @@ public class ApiScraper {
                 "skip": 0
             }
         }
-        """.formatted(sokeord);
+        """.formatted(searchWord);
 
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
@@ -45,36 +45,36 @@ public class ApiScraper {
 
     ObjectMapper mapper = new ObjectMapper();
     JsonNode root = mapper.readTree(response.body());
-    JsonNode produkter = root.get("results").get("items");
+    JsonNode products = root.get("results").get("items");
 
-    for (JsonNode produkt : produkter) {
-      String navn = finnVerdi(produkt, "Name");
-      String pris = finnVerdi(produkt, "RetailPrice");
-      String medlemspris = finnVerdi(produkt, "MembershipPrice");
-      boolean harStorrelse = harStorrelse(produkt, "Attributes.sizeInStock", onsketStorrelse);
+    for (JsonNode product : products) {
+      String name = findPrice(product, "Name");
+      String price = findPrice(product, "RetailPrice");
+      String membershipPrice = findPrice(product, "MembershipPrice");
+      boolean hasSize = hasSize(product, "Attributes.sizeInStock", preferredSize);
 
-      System.out.println("Produkt:      " + navn);
-      System.out.println("Ordinær pris: " + pris + " kr");
-      System.out.println("Medlemspris:  " + medlemspris + " kr");
-      System.out.println("Størrelse " + onsketStorrelse + " på lager: " + (harStorrelse ? "JA ✓" : "Nei"));
+      System.out.println("Produkt:      " + name);
+      System.out.println("Ordinær price: " + price + " kr");
+      System.out.println("Medlemspris:  " + membershipPrice + " kr");
+      System.out.println("Størrelse " + preferredSize + " på lager: " + (hasSize ? "JA" : "Nei"));
       System.out.println("---");
     }
   }
 
-  static String finnVerdi(JsonNode produkt, String attributtNavn) {
-    for (JsonNode attr : produkt.get("attributes")) {
-      if (attr.get("name").asText().equals(attributtNavn)) {
+  static String findPrice(JsonNode product, String attributeName) {
+    for (JsonNode attr : product.get("attributes")) {
+      if (attr.get("name").asText().equals(attributeName)) {
         return attr.get("values").get(0).asText();
       }
     }
     return "ikke funnet";
   }
 
-  static boolean harStorrelse(JsonNode produkt, String attributtNavn, String storrelse) {
-    for (JsonNode attr : produkt.get("attributes")) {
-      if (attr.get("name").asText().equals(attributtNavn)) {
+  static boolean hasSize(JsonNode product, String attributeName, String size) {
+    for (JsonNode attr : product.get("attributes")) {
+      if (attr.get("name").asText().equals(attributeName)) {
         for (JsonNode val : attr.get("values")) {
-          if (val.asText().equals(storrelse)) {
+          if (val.asText().equals(size)) {
             return true;
           }
         }
