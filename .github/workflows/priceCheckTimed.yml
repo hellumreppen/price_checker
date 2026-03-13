@@ -20,10 +20,11 @@ jobs:
           
       - name: Bygg og kjør
         run: mvn clean install exec:java -Dexec.mainClass="oskar.projects.bot.price_checker.Main"
-        
+    
       - name: Send Discord-melding
         run: |
           MESSAGE=$(cat src/main/resources/resultat.txt)
+          PAYLOAD=$(jq -n --arg msg "$MESSAGE" '{"content": $msg}')
           curl -H "Content-Type: application/json" \
-               -d "{\"content\": \"$MESSAGE\"}" \
+               -d "$PAYLOAD" \
                ${{ secrets.DISCORD_WEBHOOK }}
