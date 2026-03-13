@@ -12,7 +12,7 @@ public class ApiScraper {
 
   public void getPrices() throws Exception{
 
-    String searchWord = "tecnica zero g tour pro";
+    String searchWord = "atomic hawx ultra 130 xtd boa";
     String preferredSize = "27,5";  // endre denne etter behov
 
     String requestBody = """
@@ -47,7 +47,7 @@ public class ApiScraper {
     JsonNode root = mapper.readTree(response.body());
     JsonNode products = root.get("results").get("items");
 
-    for (JsonNode product : products) {
+    JsonNode product = products.get(0);
       String name = findPrice(product, "Name");
       String price = findPrice(product, "RetailPrice");
       String membershipPrice = findPrice(product, "MembershipPrice");
@@ -58,7 +58,6 @@ public class ApiScraper {
       System.out.println("Medlemspris:  " + membershipPrice + " kr");
       System.out.println("Størrelse " + preferredSize + " på lager: " + (hasSize ? "JA" : "Nei"));
       System.out.println("---");
-    }
   }
 
   static String findPrice(JsonNode product, String attributeName) {
