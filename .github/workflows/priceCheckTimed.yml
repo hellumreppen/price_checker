@@ -21,14 +21,9 @@ jobs:
       - name: Bygg og kjør
         run: mvn clean install exec:java -Dexec.mainClass="oskar.projects.bot.price_checker.Main"
         
-      - name: Send e-post
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp-relay.brevo.com
-          server_port: 465
-          username: ${{ secrets.BREVO_USER }}
-          password: ${{ secrets.BREVO_PASSWORD }}
-          subject: "Prissjekk"
-          to: oskar.hellum.reppen@gmail.com
-          from: ozzy.dev@outlook.com
-          body: file://src/main/resources/resultat.txt
+      - name: Send Discord-melding
+        run: |
+          MESSAGE=$(cat target/resultat.txt)
+          curl -H "Content-Type: application/json" \
+               -d "{\"content\": \"$MESSAGE\"}" \
+               ${{ secrets.DISCORD_WEBHOOK }}
