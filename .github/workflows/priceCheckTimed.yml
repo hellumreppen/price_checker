@@ -17,19 +17,19 @@ jobs:
         with:
           java-version: '25'
           distribution: 'temurin'
+          
+      - name: Bygg og kjør
+        run: mvn clean install exec:java -Dexec.mainClass="oskar.projects.bot.price_checker.Main"
 
-      - name: compile
-        run: |
-          mvn compile
+      - name: Send e-post
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: "Prissjekk ${{ github.run_number }}"
+          to: din@epost.no
+          from: din@epost.no
+          body: file://resultat.txt
 
-      - name: package
-        run: |
-          mvn package
-
-      - name: install
-        run: |
-          mvn clean install
-
-      - name: kjør
-        run: |
-          mvn exec:java -Dexec.mainClass="oskar.projects.bot.price_checker.Main"
