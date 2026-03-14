@@ -12,8 +12,8 @@ public class Compare {
   List<Result> results = new ArrayList<>();
 
   public Compare() throws Exception {
-    results.add(new Braasport().checkPrice("atomic hawx ultra xtd 130", "27,5"));
-    results.add(new Skistar().checkPrice("atomic hawx ultra xtd 130", "27,5"));
+    results.add(new Braasport().checkPrice("tecnica zero g tour pro", "27,5"));
+    results.add(new Skistar().checkPrice("tecnica zero g tour pro", "27,5"));
   }
 
   public Result getLowestPrice() throws Exception {
