@@ -7,6 +7,8 @@ import oskar.projects.bot.price_checker.model.scrapers.Skistar;
 
 public class Main {
   static void main() throws Exception{
+    System.out.println(new Skistar().checkPrice("atomic hawx ultra xtd 130", "27,5"));
+    System.out.println(new Braasport().checkPrice("atomic hawx ultra xtd 130", "27,5"));
     try {
       String output = "";
       Compare compare = new Compare();
