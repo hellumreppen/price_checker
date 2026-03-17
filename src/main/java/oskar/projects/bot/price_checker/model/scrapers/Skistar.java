@@ -52,6 +52,12 @@ public class Skistar implements MainScraper{
     JsonNode product0 = productGroups.get(0).get("products").get(0);
 
     String name = product0.get("title").asText();
+    
+    // Returnerer null hvis produktnavnet ikke matcher søkeordet
+    if (!name.toLowerCase().contains(searchWord.toLowerCase())) {
+      return null;
+    }
+    
     Double price = product0.get("sellingPrice").get("min").asDouble();
 
     boolean hasSize = false;
@@ -62,7 +68,7 @@ public class Skistar implements MainScraper{
         break;
       }
     }
-
+    
     return new Result("Skistar Shop", name, price, hasSize);
   }
 }
