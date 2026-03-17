@@ -1,6 +1,7 @@
 package oskar.projects.bot.price_checker.model;
 
 import oskar.projects.bot.price_checker.model.scrapers.Braasport;
+import oskar.projects.bot.price_checker.model.scrapers.Fjellsport;
 import oskar.projects.bot.price_checker.model.scrapers.Skistar;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class Compare {
   public Compare() throws Exception {
     results.add(new Braasport().checkPrice("tecnica zero g tour pro", "27,5"));
     results.add(new Skistar().checkPrice("tecnica zero g tour pro", "27,5"));
+    results.add((new Fjellsport()).checkPrice("tecnica zero g pro", "27,5"));
   }
 
   public Result getLowestPrice() throws Exception {
